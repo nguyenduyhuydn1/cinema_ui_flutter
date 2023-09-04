@@ -1,9 +1,16 @@
-import 'package:cinema_ui_flutter/presentation/screens/home/home_screen.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:cinema_ui_flutter/presentation/screens/screens.dart';
+
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/intro',
   routes: [
+    GoRoute(
+      path: '/intro',
+      builder: (context, state) {
+        return const IntroScreen();
+      },
+    ),
     GoRoute(
       path: '/',
       builder: (context, state) {
