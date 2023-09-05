@@ -40,7 +40,7 @@ class MovieDb {
         originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? '',
         releaseDate: DateTime.parse(json["release_date"] ?? DateTime.now()),
         title: json["title"],
         video: json["video"],

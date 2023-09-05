@@ -1,7 +1,7 @@
 import 'package:cinema_ui_flutter/infrastructure/models/movie_db.dart';
 
 class MovieResponsive {
-  final Dates dates;
+  final DateTime dates;
   final int page;
   final List<MovieDb> results;
   final int totalPages;
@@ -17,7 +17,7 @@ class MovieResponsive {
 
   factory MovieResponsive.fromJson(Map<String, dynamic> json) =>
       MovieResponsive(
-        dates: Dates.fromJson(json["dates"]),
+        dates: DateTime.now(),
         page: json["page"],
         results:
             List<MovieDb>.from(json["results"].map((x) => MovieDb.fromJson(x))),
@@ -26,32 +26,10 @@ class MovieResponsive {
       );
 
   Map<String, dynamic> toJson() => {
-        "dates": dates.toJson(),
+        "dates": DateTime.now(),
         "page": page,
         "results": List<dynamic>.from(results.map((x) => x.toJson())),
         "total_pages": totalPages,
         "total_results": totalResults,
-      };
-}
-
-class Dates {
-  final DateTime maximum;
-  final DateTime minimum;
-
-  Dates({
-    required this.maximum,
-    required this.minimum,
-  });
-
-  factory Dates.fromJson(Map<String, dynamic> json) => Dates(
-        maximum: DateTime.parse(json["maximum"]),
-        minimum: DateTime.parse(json["minimum"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "maximum":
-            "${maximum.year.toString().padLeft(4, '0')}-${maximum.month.toString().padLeft(2, '0')}-${maximum.day.toString().padLeft(2, '0')}",
-        "minimum":
-            "${minimum.year.toString().padLeft(4, '0')}-${minimum.month.toString().padLeft(2, '0')}-${minimum.day.toString().padLeft(2, '0')}",
       };
 }

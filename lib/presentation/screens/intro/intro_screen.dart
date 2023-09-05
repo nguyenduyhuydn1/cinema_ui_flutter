@@ -1,8 +1,11 @@
-import 'package:cinema_ui_flutter/domain/entities/movie.dart';
-import 'package:cinema_ui_flutter/presentation/providers/intro/initial_loading_provider.dart';
-import 'package:cinema_ui_flutter/presentation/providers/intro/intro_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinema_ui_flutter/domain/entities/movie.dart';
+
+import 'package:cinema_ui_flutter/presentation/providers/intro/initial_loading_provider.dart';
+import 'package:cinema_ui_flutter/presentation/providers/intro/intro_provider.dart';
+
+import 'package:go_router/go_router.dart';
 
 class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
@@ -18,6 +21,11 @@ class IntroScreenState extends ConsumerState<IntroScreen> {
     ref.read(introProvider1.notifier).loadIntro(page: 5);
     ref.read(introProvider2.notifier).loadIntro(page: 6);
     ref.read(introProvider3.notifier).loadIntro(page: 7);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -81,7 +89,9 @@ class IntroScreenState extends ConsumerState<IntroScreen> {
               ),
               child: Center(
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/');
+                  },
                   child: const Text("Go to Home Screen"),
                 ),
               ),
@@ -104,10 +114,10 @@ class _ListProducts extends ConsumerStatefulWidget {
   });
 
   @override
-  _ListProductsState createState() => _ListProductsState();
+  ListProductsState createState() => ListProductsState();
 }
 
-class _ListProductsState extends ConsumerState<_ListProducts> {
+class ListProductsState extends ConsumerState<_ListProducts> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -115,8 +125,9 @@ class _ListProductsState extends ConsumerState<_ListProducts> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      double minScrollExtent = _scrollController.position.minScrollExtent;
       double maxScrollExtent = _scrollController.position.maxScrollExtent;
+      double minScrollExtent = _scrollController.position.minScrollExtent;
+
       animateToMaxMin(
         maxScrollExtent,
         minScrollExtent,
@@ -127,15 +138,25 @@ class _ListProductsState extends ConsumerState<_ListProducts> {
     });
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   animateToMaxMin(double max, double min, double direction, int seconds,
       ScrollController scrollController) {
     scrollController
         .animateTo(direction,
             duration: Duration(seconds: seconds), curve: Curves.linear)
-        .then((value) {
-      direction = direction == max ? min : max;
-      animateToMaxMin(max, min, direction, seconds, scrollController);
-    });
+        .then(
+      (value) {
+        direction = direction == max ? min : max;
+        if (scrollController.hasClients) {
+          animateToMaxMin(max, min, direction, seconds, scrollController);
+        }
+      },
+    );
   }
 
   @override

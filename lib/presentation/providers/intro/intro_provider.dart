@@ -36,7 +36,7 @@ class IntroState {
 
   IntroState({
     this.isLastPage = false,
-    this.page = 5,
+    this.page = 1,
     this.isLoading = false,
     this.movies = const [],
   });
