@@ -4,7 +4,7 @@ import 'package:cinema_ui_flutter/presentation/screens/screens.dart';
 import 'package:cinema_ui_flutter/presentation/views/views.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/intro',
   routes: [
     GoRoute(
       path: '/intro',

@@ -36,15 +36,15 @@ class MoviesNotifier extends StateNotifier<MoviesState> {
   }
 
   Future loadNextPage({page = 1}) async {
-    // if (state.isLoading || state.isLastPage) return;
-    // state = state.copyWith(isLoading: true);
+    if (state.isLoading || state.isLastPage) return;
+    state = state.copyWith(isLoading: true);
 
     final movies = await fetch(page: state.page);
 
-    // if (movies.isEmpty) {
-    //   state = state.copyWith(isLoading: false, isLastPage: true);
-    //   return;
-    // }
+    if (movies.isEmpty) {
+      state = state.copyWith(isLoading: false, isLastPage: true);
+      return;
+    }
 
     state = state.copyWith(
       isLastPage: false,

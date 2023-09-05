@@ -53,19 +53,28 @@ class HomeViewState extends ConsumerState<HomeView> {
                   child: SlideShow(listSlide: slide),
                 ),
                 HorizontalSlide(
-                    title: "Popular", movies: popular.movies, width: 150),
+                  title: "Popular",
+                  movies: popular.movies,
+                  width: 150,
+                  loadNextPage: () =>
+                      ref.read(popularProvider.notifier).loadNextPage(),
+                ),
                 const SizedBox(height: 15),
                 HorizontalSlide(
                   title: "Top Rated",
                   movies: topRated.movies,
                   width: 300,
                   height: 190,
+                  loadNextPage: () =>
+                      ref.read(topRatedProvider.notifier).loadNextPage(),
                 ),
                 HorizontalSlide(
                   title: "Up Coming",
                   movies: upComing.movies,
                   width: 300,
                   height: 190,
+                  loadNextPage: () =>
+                      ref.read(upComingProvider.notifier).loadNextPage(),
                 ),
                 const SizedBox(height: 100)
               ],
