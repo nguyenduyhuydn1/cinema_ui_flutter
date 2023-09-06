@@ -1,3 +1,4 @@
+import 'package:cinema_ui_flutter/presentation/providers/movies/initial_loading_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,25 +26,20 @@ class HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingMoviesProvider);
+    if (initialLoading) {
+      return const SizedBox(child: Center(child: CircularProgressIndicator()));
+    }
+
     final slide = ref.watch(slideShowProvider);
-    // final nowPlaying = ref.watch(nowPlayingProvider);
     final popular = ref.watch(popularProvider);
     final topRated = ref.watch(topRatedProvider);
     final upComing = ref.watch(upComingProvider);
+
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
-        SliverAppBar(
-          backgroundColor: Colors.black45,
-          title: const Text("TMDB"),
-          elevation: 0,
-          actions: [
-            CustomButton(icon: Icons.search, onpressed: () {}),
-            const SizedBox(width: 15)
-          ],
-          floating: true,
-          // pinned: true,
-        ),
+        const _AppBar(),
         SliverList(
           delegate: SliverChildBuilderDelegate(childCount: 1, (context, index) {
             return Column(
@@ -82,6 +78,40 @@ class HomeViewState extends ConsumerState<HomeView> {
           }),
         )
       ],
+    );
+  }
+}
+
+class _AppBar extends ConsumerWidget {
+  const _AppBar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SliverAppBar(
+      backgroundColor: Colors.black45,
+      title: const Text("TMDB"),
+      elevation: 0,
+      actions: [
+        CustomButton(
+            icon: Icons.search,
+            onpressed: () {
+              // final searchedMovie = ref.read(searchedProvider);
+              // final searchQuery = ref.read(searchProvider);
+
+              // showSearch(
+              //   query: searchedProduct,
+              //   context: context,
+              //   delegate: SearchProductDelegates(
+              //     searchQuery:
+              //         ref.read(searchProvider.notifier).searchProductByTerm,
+              //     initialProducts: searchQuery,
+              //   ),
+              // );
+            }),
+        const SizedBox(width: 15)
+      ],
+      floating: true,
+      // pinned: true,
     );
   }
 }

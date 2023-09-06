@@ -1,4 +1,4 @@
-import 'package:cinema_ui_flutter/infrastructure/models/movie_db.dart';
+import 'package:cinema_ui_flutter/infrastructure/models/movie/movie_db.dart';
 
 class MovieResponsive {
   final DateTime dates;

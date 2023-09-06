@@ -1,20 +1,20 @@
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
-import 'package:cinema_ui_flutter/presentation/providers/intro/intro_repository_provider.dart';
+import 'package:cinema_ui_flutter/presentation/providers/movies_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final introProvider1 =
     StateNotifierProvider.autoDispose<IntroNotifier, IntroState>((ref) {
-  final fetchMovie = ref.watch(introRepositoryImpl).getNowPlaying;
+  final fetchMovie = ref.watch(moviesRepositoryImpl).getNowPlaying;
   return IntroNotifier(fetchMovie: fetchMovie);
 });
 final introProvider2 =
     StateNotifierProvider.autoDispose<IntroNotifier, IntroState>((ref) {
-  final fetchMovie = ref.watch(introRepositoryImpl).getNowPlaying;
+  final fetchMovie = ref.watch(moviesRepositoryImpl).getNowPlaying;
   return IntroNotifier(fetchMovie: fetchMovie);
 });
 final introProvider3 =
     StateNotifierProvider.autoDispose<IntroNotifier, IntroState>((ref) {
-  final fetchMovie = ref.watch(introRepositoryImpl).getNowPlaying;
+  final fetchMovie = ref.watch(moviesRepositoryImpl).getNowPlaying;
   return IntroNotifier(fetchMovie: fetchMovie);
 });
 

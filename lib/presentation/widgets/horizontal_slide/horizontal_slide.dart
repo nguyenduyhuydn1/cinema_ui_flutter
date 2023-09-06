@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
 import 'package:cinema_ui_flutter/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HorizontalSlide extends StatefulWidget {
   final double width;
@@ -93,7 +94,9 @@ class _ItemMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.push('/${movie.id}');
+      },
       child: Padding(
         padding: index == 0
             ? const EdgeInsets.only(left: 20, right: 20)

@@ -1,7 +1,7 @@
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:cinema_ui_flutter/presentation/providers/movies/repository/movies_repository_provider.dart';
+import 'package:cinema_ui_flutter/presentation/providers/movies_repository_provider.dart';
 
 final nowPlayingProvider =
     StateNotifierProvider<MoviesNotifier, MoviesState>((ref) {

@@ -52,13 +52,25 @@ class MoviesDatasourceImpl extends MoviesDataSource {
   }
 
   @override
-  Future<Movie> getMovieById(String id) {
-    throw UnimplementedError();
+  Future<Movie> getMovieById(String id) async {
+    final res = await dio.get('/movie/$id');
+    if (res.statusCode != 200) throw Exception('Movie with id: $id not found');
+
+    final movieDetails = MovieDetails.fromJson(res.data);
+    final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+    return movie;
   }
 
   @override
-  Future<List<Movie>> searchMovies(String query, {int page = 1}) {
-    throw UnimplementedError();
+  Future<List<Movie>> searchMovies(String query, {int page = 1}) async {
+    if (query.isEmpty) return [];
+
+    final res = await dio.get(
+      '/search/movie',
+      queryParameters: {'query': query, 'page': page},
+    );
+
+    return _jsonToMovies(res.data);
   }
 
   @override
