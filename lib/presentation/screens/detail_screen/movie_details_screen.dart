@@ -1,11 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:cinema_ui_flutter/config/constants/size_config.dart';
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
 import 'package:cinema_ui_flutter/presentation/providers/movies/movie_details_provider.dart';
-import 'package:cinema_ui_flutter/presentation/screens/detail_screen/actors_section.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinema_ui_flutter/presentation/screens/detail_screen/actors_section.dart';
+import 'package:cinema_ui_flutter/presentation/screens/detail_screen/videos_youtube_section.dart';
 
 class MovieDetailsScreen extends ConsumerStatefulWidget {
   final String id;
@@ -43,7 +45,8 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
                   _TitleMovie(movie: movie),
                   _Genres(movie: movie),
                   ActorsSection(movieId: movie.id.toString()),
-                  const _Trailers()
+                  VideosYoutube(movieId: movie.id),
+                  const SizedBox(height: 100),
                 ],
               );
             }),
@@ -51,15 +54,6 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
         ],
       ),
     );
-  }
-}
-
-class _Trailers extends StatelessWidget {
-  const _Trailers();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox();
   }
 }
 

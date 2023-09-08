@@ -45,7 +45,7 @@ class ActorsState extends ConsumerState<ActorsSection> {
           ),
           SizedBox(
             width: SizeConfig.screenWidth,
-            height: 150,
+            height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: actors.length,
@@ -56,12 +56,32 @@ class ActorsState extends ConsumerState<ActorsSection> {
                   padding: index == 0
                       ? const EdgeInsets.only(right: 10, left: 10)
                       : const EdgeInsets.only(right: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      actor.profilePath!,
-                      fit: BoxFit.cover,
-                      width: 100,
+                  child: SizedBox(
+                    width: 100,
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            actor.profilePath!,
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 150,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          actor.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          actor.character!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
                 );

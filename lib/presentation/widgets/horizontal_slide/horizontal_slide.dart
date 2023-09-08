@@ -95,7 +95,7 @@ class _ItemMovie extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/${movie.id}');
+        context.push('/details/${movie.id}');
       },
       child: Padding(
         padding: index == 0

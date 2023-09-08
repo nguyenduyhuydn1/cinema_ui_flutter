@@ -1,5 +1,8 @@
+import 'package:cinema_ui_flutter/domain/entities/video.dart';
 import 'package:cinema_ui_flutter/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinema_ui_flutter/infrastructure/mappers/video_mapper.dart';
 import 'package:cinema_ui_flutter/infrastructure/models/models.dart';
+import 'package:cinema_ui_flutter/infrastructure/models/video/video_responsive.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cinema_ui_flutter/config/constants/enviroments.dart';
@@ -74,7 +77,22 @@ class MoviesDatasourceImpl extends MoviesDataSource {
   }
 
   @override
-  Future<List<Movie>> getSimilarMovies(int movieId) {
+  Future<List<Video>> getYoutubeVideosById(int movieId) async {
+    final res = await dio.get('/movie/$movieId/videos');
+    final videoResponsive = VideoResponsive.fromJson(res.data);
+    final List<Video> videos = [];
+
+    for (final e in videoResponsive.results) {
+      if (e.site == 'YouTube') {
+        final video = VideoMapper.videoDbToEntity(e);
+        videos.add(video);
+      }
+    }
+    return videos;
+  }
+
+  @override
+  Future<List<Movie>> getSimilarMovies(int movieId) async {
     throw UnimplementedError();
   }
 }
