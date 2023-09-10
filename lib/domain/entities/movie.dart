@@ -30,4 +30,21 @@ class Movie {
     required this.voteAverage,
     required this.voteCount,
   });
+
+  Map<String, dynamic> toJson() => {
+        "adult": adult,
+        "backdropPath": backdropPath,
+        "genreIds": genreIds,
+        "id": id,
+        "originalLanguage": originalLanguage,
+        "originalTitle": originalTitle,
+        "overview": overview,
+        "popularity": popularity,
+        "posterPath": posterPath,
+        "releaseDate": releaseDate.toString(),
+        "title": title,
+        "video": video,
+        "voteAverage": voteAverage,
+        "voteCount": voteCount,
+      };
 }

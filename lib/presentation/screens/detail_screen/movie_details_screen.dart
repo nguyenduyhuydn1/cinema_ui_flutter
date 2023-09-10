@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinema_ui_flutter/presentation/providers/storage/favorites_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -143,6 +144,9 @@ class _CustomSliverAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final favorites = ref.watch(favoritesProvider);
+    final checkFavorite = favorites.indexWhere((e) => e.id == movie.id);
+
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: SizeConfig.screenHeight * 0.7,
@@ -151,15 +155,9 @@ class _CustomSliverAppBar extends ConsumerWidget {
         Center(
           child: IconButton(
             onPressed: () async {
-              // ref.read(localStorageRepositoryProvider)
-              //   .toggleFavorite(movie);
-              // await ref
-              //     .read(favoriteMoviesProvider.notifier)
-              //     .toggleFavorite(movie);
-
-              // ref.invalidate(isFavoriteProvider(movie.id));
+              await ref.read(favoritesProvider.notifier).toggleFavorite(movie);
             },
-            icon: true
+            icon: checkFavorite != -1
                 ? const Icon(Icons.favorite_rounded, color: Colors.red)
                 : const Icon(Icons.favorite_border),
           ),

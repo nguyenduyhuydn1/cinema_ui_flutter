@@ -1,9 +1,7 @@
-import 'package:cinema_ui_flutter/presentation/providers/movies/initial_loading_provider.dart';
+import 'package:cinema_ui_flutter/presentation/delegates/search_movie_delegate.dart';
+import 'package:cinema_ui_flutter/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:cinema_ui_flutter/presentation/providers/movies/movies_provider.dart';
-import 'package:cinema_ui_flutter/presentation/providers/movies/slide_show_provider.dart';
 
 import 'package:cinema_ui_flutter/presentation/widgets/widgets.dart';
 
@@ -95,18 +93,19 @@ class _AppBar extends ConsumerWidget {
         CustomButton(
             icon: Icons.search,
             onpressed: () {
-              // final searchedMovie = ref.read(searchedProvider);
-              // final searchQuery = ref.read(searchProvider);
+              final searchedMovie = ref.read(searchedMoviesProvider);
+              final searchQuery = ref.read(searchQueryProvider);
 
-              // showSearch(
-              //   query: searchedProduct,
-              //   context: context,
-              //   delegate: SearchProductDelegates(
-              //     searchQuery:
-              //         ref.read(searchProvider.notifier).searchProductByTerm,
-              //     initialProducts: searchQuery,
-              //   ),
-              // );
+              showSearch(
+                query: searchQuery,
+                context: context,
+                delegate: SearchMovieDelegates(
+                  searchQuery: ref
+                      .read(searchedMoviesProvider.notifier)
+                      .searchMoviesByQuery,
+                  initialMovies: searchedMovie,
+                ),
+              );
             }),
         const SizedBox(width: 15)
       ],

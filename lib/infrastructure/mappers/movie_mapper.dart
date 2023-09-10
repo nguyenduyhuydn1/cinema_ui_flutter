@@ -44,4 +44,21 @@ class MovieMapper {
         voteAverage: movieDb.voteAverage,
         voteCount: movieDb.voteCount,
       );
+
+  static jsonToEntity(Map<String, dynamic> json) => Movie(
+        adult: json["adult"],
+        backdropPath: json["backdropPath"],
+        genreIds: List<String>.from(json["genreIds"].map((x) => x)),
+        id: json["id"],
+        originalLanguage: json["originalLanguage"],
+        originalTitle: json["originalTitle"],
+        overview: json["overview"],
+        popularity: json["popularity"],
+        posterPath: json["posterPath"],
+        releaseDate: DateTime.parse(json["releaseDate"]),
+        title: json["title"],
+        video: json["video"],
+        voteAverage: json["voteAverage"],
+        voteCount: json["voteCount"],
+      );
 }

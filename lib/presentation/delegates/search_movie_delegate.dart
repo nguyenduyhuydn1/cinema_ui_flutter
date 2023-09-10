@@ -6,52 +6,51 @@ import 'package:go_router/go_router.dart';
 
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
 
-class SearchProductDelegates extends SearchDelegate {
+class SearchMovieDelegates extends SearchDelegate {
   final Future<List<Movie>> Function(String query) searchQuery;
-  List<Movie> initialProducts;
+  List<Movie> initialMovies;
 
-  SearchProductDelegates(
-      {required this.searchQuery, required this.initialProducts})
+  SearchMovieDelegates({required this.searchQuery, required this.initialMovies})
       : super(
-          searchFieldLabel: "Search Product",
+          searchFieldLabel: "Search Movie",
           // textInputAction: TextInputAction.done
           // searchFieldStyle: const TextStyle(color: Colors.red),
         );
 
   //deboucing
   // broadcast lang nghe hon 1 lan
-  StreamController<List<Movie>> debounceProducts = StreamController.broadcast();
+  StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
   Timer? _debounceTimer;
 
   void clearStream() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    debounceProducts.close();
+    debounceMovies.close();
   }
 
   void _onQueryChanged(String query) {
     isLoadingStream.add(true);
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
-      final products = await searchQuery(query);
-      initialProducts = products;
-      debounceProducts.add(products);
+      final movies = await searchQuery(query);
+      initialMovies = movies;
+      debounceMovies.add(movies);
       isLoadingStream.add(false);
     });
   }
 
   Widget buildResultsAndSuggestions() {
     return StreamBuilder(
-      initialData: initialProducts,
-      stream: debounceProducts.stream,
+      initialData: initialMovies,
+      stream: debounceMovies.stream,
       builder: (context, snapshot) {
-        final products = snapshot.data ?? [];
+        final movies = snapshot.data ?? [];
 
         return ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, index) => _ProductItem(
-            item: products[index],
-            onProductSelected: (context, item) {
+          itemCount: movies.length,
+          itemBuilder: (context, index) => _MovieItem(
+            item: movies[index],
+            onMovieSelected: (context, item) {
               clearStream();
               close(context, item);
             },
@@ -114,13 +113,13 @@ class SearchProductDelegates extends SearchDelegate {
   }
 }
 
-class _ProductItem extends StatelessWidget {
-  const _ProductItem({
+class _MovieItem extends StatelessWidget {
+  const _MovieItem({
     required this.item,
-    required this.onProductSelected,
+    required this.onMovieSelected,
   });
 
-  final Function onProductSelected;
+  final Function onMovieSelected;
   final Movie item;
 
   @override
@@ -130,8 +129,8 @@ class _ProductItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/product/${item.id}');
-        onProductSelected(context, item);
+        context.push('/details/${item.id}');
+        onMovieSelected(context, item);
       },
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -142,10 +141,10 @@ class _ProductItem extends StatelessWidget {
             SizedBox(
               width: size.width * 0.4,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
                 child: Image.network(
                   item.posterPath,
-                  height: 150,
+                  // height: 250,
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
                     return FadeIn(child: child);
@@ -153,57 +152,28 @@ class _ProductItem extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 15),
             //text
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      "${item.title} \n".toUpperCase(),
-                      style: textStyle.titleMedium?.copyWith(
-                        fontSize: 15,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    //  RichText(
-                    //   text: TextSpan(
-                    //     children: [
-                    //       TextSpan(
-                    //         text: "${item.name} \n".toUpperCase(),
-                    //         style:
-                    //             textStyle.titleMedium?.copyWith(fontSize: 17),
-                    //       ),
-                    //       TextSpan(
-                    //         text: item.brand,
-                    //         style: textStyle.titleMedium?.copyWith(
-                    //           fontSize: 17,
-                    //           color: Colors.green,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ),
                   Text(
                     item.title,
                     style: textStyle.titleMedium?.copyWith(
-                      fontSize: 17,
-                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      height: 1.5,
                     ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text('\$${item.title}',
-                        style: textStyle.titleMedium?.copyWith(
-                          fontSize: 17,
-                          color: Colors.green,
-                        )),
+                  const SizedBox(height: 10),
+                  Text(
+                    item.overview,
+                    maxLines: 11,
+                    overflow: TextOverflow.ellipsis,
                   )
                 ],
               ),

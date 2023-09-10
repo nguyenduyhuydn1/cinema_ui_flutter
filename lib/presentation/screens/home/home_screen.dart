@@ -15,8 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = const [
     HomeView(),
-    FavoritesView(),
     CategoriesView(),
+    FavoritesView(),
   ];
 
   @override

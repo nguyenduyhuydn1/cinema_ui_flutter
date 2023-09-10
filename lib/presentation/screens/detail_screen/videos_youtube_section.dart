@@ -59,23 +59,34 @@ class VideosYoutubeState extends ConsumerState<VideosYoutube> {
         //   },
         // );
 
+        Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        const Padding(
+          padding: EdgeInsets.only(left: 10, bottom: 10),
+          child: Text(
+            "Trailers",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
         SizedBox(
-      height: 200,
-      child: ListView.builder(
-        itemCount: videos.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          final video = videos[index];
-          return Padding(
-            padding: index == 0
-                ? const EdgeInsets.only(left: 10)
-                : index == videos.length - 1
-                    ? const EdgeInsets.only(right: 10)
-                    : const EdgeInsets.all(0),
-            child: _VideoYoutube(video: video),
-          );
-        },
-      ),
+          height: 200,
+          child: ListView.builder(
+            itemCount: videos.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final video = videos[index];
+              return Padding(
+                padding: index == 0
+                    ? const EdgeInsets.only(left: 10, right: 10)
+                    : const EdgeInsets.only(right: 10),
+                child: _VideoYoutube(video: video),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
