@@ -12,12 +12,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _pageIndex = 0;
+  List<Widget> pages = [];
+  void onPressed(int index) {
+    setState(() => _pageIndex = index);
+  }
 
-  final List<Widget> _pages = const [
-    HomeView(),
-    CategoriesView(),
-    FavoritesView(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    pages = [
+      const HomeView(),
+      CategoriesView(onPressed: () => onPressed(0)),
+      const FavoritesView(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             IndexedStack(
               index: _pageIndex,
-              children: _pages,
+              children: pages,
             ),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: _NavigationBottomBar(
-                onpressed: (i) => setState(() => _pageIndex = i),
-              ),
-            )
+            if (_pageIndex != 1)
+              Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: _NavigationBottomBar(onpressed: onPressed),
+              )
           ],
         ),
       ),

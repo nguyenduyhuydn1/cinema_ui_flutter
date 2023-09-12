@@ -7,6 +7,8 @@ import 'package:cinema_ui_flutter/presentation/providers/intro/intro_provider.da
 
 import 'package:go_router/go_router.dart';
 
+import 'button_intro.dart';
+
 class IntroScreen extends ConsumerStatefulWidget {
   const IntroScreen({super.key});
 
@@ -88,11 +90,15 @@ class IntroScreenState extends ConsumerState<IntroScreen> {
                 ),
               ),
               child: Center(
-                child: FilledButton(
+                child: UnicornOutlineButton(
+                  strokeWidth: 2,
+                  radius: 30,
+                  gradient:
+                      const LinearGradient(colors: [Colors.blue, Colors.pink]),
+                  child: const Text('Go Home', style: TextStyle(fontSize: 16)),
                   onPressed: () {
                     context.go('/');
                   },
-                  child: const Text("Go to Home Screen"),
                 ),
               ),
             ),

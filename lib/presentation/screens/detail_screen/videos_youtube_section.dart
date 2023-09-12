@@ -25,6 +25,14 @@ class VideosYoutubeState extends ConsumerState<VideosYoutube> {
   @override
   Widget build(BuildContext context) {
     final videos = ref.watch(videosYoutubeProvider);
+    if (videos.isEmpty) {
+      return const SizedBox(
+        child: Center(
+          child: Text("data is not found"),
+        ),
+      );
+    }
+
     return
 
         // OrientationBuilder(

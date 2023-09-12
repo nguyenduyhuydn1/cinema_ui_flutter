@@ -18,7 +18,7 @@ class MovieMapper {
             ? 'https://image.tmdb.org/t/p/w500${movieDb.posterPath}'
             : "https://www.reelviews.net/resources/img/default_poster.jpg",
         releaseDate: movieDb.releaseDate ?? DateTime.now(),
-        title: movieDb.title,
+        title: movieDb.title == '' ? 'default title' : movieDb.title,
         video: movieDb.video,
         voteAverage: movieDb.voteAverage,
         voteCount: movieDb.voteCount,

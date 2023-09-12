@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:cinema_ui_flutter/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/intro',
   routes: [
     GoRoute(
       path: '/intro',
@@ -21,6 +21,16 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final id = state.pathParameters['id']!;
         return MovieDetailsScreen(id: id);
+      },
+    ),
+    GoRoute(
+      path: '/tv/details/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return MovieDetailsScreen(
+          id: id,
+          check: true,
+        );
       },
     ),
     GoRoute(

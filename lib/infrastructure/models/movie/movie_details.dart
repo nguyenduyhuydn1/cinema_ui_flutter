@@ -59,31 +59,32 @@ class MovieDetails {
         belongsToCollection: json["belongs_to_collection"] == null
             ? null
             : BelongsToCollection.fromJson(json["belongs_to_collection"]),
-        budget: json["budget"],
+        budget: json["budget"] ?? 1,
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
         imdbId: json["imdb_id"],
         originalLanguage: json["original_language"],
-        originalTitle: json["original_title"],
+        originalTitle: json["original_title"] ?? "default",
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? '',
         productionCompanies: List<ProductionCompany>.from(
             json["production_companies"]
                 .map((x) => ProductionCompany.fromJson(x))),
         productionCountries: List<ProductionCountry>.from(
             json["production_countries"]
                 .map((x) => ProductionCountry.fromJson(x))),
-        releaseDate: DateTime.parse(json["release_date"]),
-        revenue: json["revenue"],
-        runtime: json["runtime"],
+        releaseDate:
+            DateTime.parse(json["release_date"] ?? DateTime.now().toString()),
+        revenue: json["revenue"] ?? 1,
+        runtime: json["runtime"] ?? 1,
         spokenLanguages: List<SpokenLanguage>.from(
             json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))),
-        status: json["status"],
-        tagline: json["tagline"],
-        title: json["title"],
-        video: json["video"],
+        status: json["status"] ?? '',
+        tagline: json["tagline"] ?? '',
+        title: json["title"] ?? json['name'],
+        video: json["video"] ?? true,
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
       );

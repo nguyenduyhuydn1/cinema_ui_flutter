@@ -79,6 +79,7 @@ class MoviesDatasourceImpl extends MoviesDataSource {
   @override
   Future<List<Video>> getYoutubeVideosById(int movieId) async {
     final res = await dio.get('/movie/$movieId/videos');
+    if (res.statusCode != 200) throw Exception('youtube is not found');
     final videoResponsive = VideoResponsive.fromJson(res.data);
     final List<Video> videos = [];
 
@@ -92,7 +93,22 @@ class MoviesDatasourceImpl extends MoviesDataSource {
   }
 
   @override
-  Future<List<Movie>> getSimilarMovies(int movieId) async {
-    throw UnimplementedError();
+  Future<List<Movie>> getTvSeriesToday({page = 1}) async {
+    final res = await dio.get(
+      '/tv/airing_today',
+      queryParameters: {'page': page},
+    );
+
+    return _jsonToMovies(res.data);
+  }
+
+  @override
+  Future<Movie> getTvById(String id) async {
+    final res = await dio.get('/tv/$id');
+    if (res.statusCode != 200) throw Exception('Movie with id: $id not found');
+
+    final movieDetails = MovieDetails.fromJson(res.data);
+    final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+    return movie;
   }
 }

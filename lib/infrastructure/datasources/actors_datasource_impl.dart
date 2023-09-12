@@ -18,6 +18,7 @@ class ActorsDatasourceImpl extends ActorsDatasource {
   @override
   Future<List<Actor>> getActorsByMovieId(String movieId) async {
     final res = await dio.get('/movie/$movieId/credits');
+    if (res.statusCode != 200) throw Exception('actors is not found');
     final creditsResponsive = CreditsResponsive.fromJson(res.data);
     List<Actor> actors = creditsResponsive.cast
         .map((e) => ActorsMapper.actorDbToEntity(e))

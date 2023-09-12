@@ -1,18 +1,18 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinema_ui_flutter/presentation/providers/storage/favorites_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:cinema_ui_flutter/presentation/providers/providers.dart';
 import 'package:cinema_ui_flutter/config/constants/size_config.dart';
 import 'package:cinema_ui_flutter/domain/entities/movie.dart';
-import 'package:cinema_ui_flutter/presentation/providers/movies/movie_details_provider.dart';
 
 import 'package:cinema_ui_flutter/presentation/screens/detail_screen/actors_section.dart';
 import 'package:cinema_ui_flutter/presentation/screens/detail_screen/videos_youtube_section.dart';
 
 class MovieDetailsScreen extends ConsumerStatefulWidget {
   final String id;
-  const MovieDetailsScreen({super.key, required this.id});
+  final bool check;
+  const MovieDetailsScreen({super.key, required this.id, this.check = false});
 
   @override
   MovieDetailsScreenState createState() => MovieDetailsScreenState();
@@ -22,12 +22,22 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(movieDetailProvider.notifier).getMovieById(widget.id);
+    if (widget.check == true) {
+      ref.read(tvDetailsProvider.notifier).getTvById(widget.id);
+    } else {
+      ref.read(movieDetailProvider.notifier).getMovieById(widget.id);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Movie? movie = ref.watch(movieDetailProvider)[widget.id];
+    Movie? movie;
+    if (widget.check == true) {
+      movie = ref.watch(tvDetailsProvider)[widget.id];
+    } else {
+      movie = ref.watch(movieDetailProvider)[widget.id];
+    }
+
     if (movie == null) {
       return const SizedBox(child: Center(child: CircularProgressIndicator()));
     }
@@ -36,17 +46,19 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie),
+          _CustomSliverAppBar(movie: movie, check: widget.check),
           SliverList(
             delegate:
                 SliverChildBuilderDelegate(childCount: 1, (context, index) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _TitleMovie(movie: movie),
+                  _TitleMovie(movie: movie!),
                   _Genres(movie: movie),
-                  ActorsSection(movieId: movie.id.toString()),
-                  VideosYoutube(movieId: movie.id),
+                  if (!widget.check)
+                    ActorsSection(movieId: movie.id.toString()),
+                  if (widget.check == true) const SizedBox(height: 500),
+                  if (!widget.check) VideosYoutube(movieId: movie.id),
                   const SizedBox(height: 100),
                 ],
               );
@@ -139,7 +151,8 @@ class _TitleMovie extends StatelessWidget {
 
 class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
-  const _CustomSliverAppBar({required this.movie});
+  final bool check;
+  const _CustomSliverAppBar({required this.movie, required this.check});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -152,16 +165,19 @@ class _CustomSliverAppBar extends ConsumerWidget {
       expandedHeight: SizeConfig.screenHeight * 0.7,
       foregroundColor: Colors.white,
       actions: [
-        Center(
-          child: IconButton(
-            onPressed: () async {
-              await ref.read(favoritesProvider.notifier).toggleFavorite(movie);
-            },
-            icon: checkFavorite != -1
-                ? const Icon(Icons.favorite_rounded, color: Colors.red)
-                : const Icon(Icons.favorite_border),
+        if (!check)
+          Center(
+            child: IconButton(
+              onPressed: () async {
+                await ref
+                    .read(favoritesProvider.notifier)
+                    .toggleFavorite(movie);
+              },
+              icon: checkFavorite != -1
+                  ? const Icon(Icons.favorite_rounded, color: Colors.red)
+                  : const Icon(Icons.favorite_border),
+            ),
           ),
-        ),
         const SizedBox(width: 10),
       ],
       flexibleSpace: FlexibleSpaceBar(

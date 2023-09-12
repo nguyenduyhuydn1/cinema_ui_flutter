@@ -3,6 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinema_ui_flutter/presentation/providers/movies_repository_provider.dart';
 
+final tvSeriesProvider =
+    StateNotifierProvider<MoviesNotifier, MoviesState>((ref) {
+  final fetch = ref.watch(moviesRepositoryImpl).getTvSeriesToday;
+  return MoviesNotifier(fetch: fetch);
+});
+
 final nowPlayingProvider =
     StateNotifierProvider<MoviesNotifier, MoviesState>((ref) {
   final fetch = ref.watch(moviesRepositoryImpl).getNowPlaying;
@@ -45,6 +51,8 @@ class MoviesNotifier extends StateNotifier<MoviesState> {
       state = state.copyWith(isLoading: false, isLastPage: true);
       return;
     }
+
+    await Future.delayed(const Duration(seconds: 2));
 
     state = state.copyWith(
       isLastPage: false,
