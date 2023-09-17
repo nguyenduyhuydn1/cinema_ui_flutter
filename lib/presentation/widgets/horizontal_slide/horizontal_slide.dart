@@ -51,7 +51,10 @@ class _HorizontalSlideState extends State<HorizontalSlide> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: CustomTitle(text: widget.title),
+          child: CustomTitle(
+            text: widget.title,
+            loadNextPage: widget.loadNextPage,
+          ),
         ),
         SizedBox(
           height: 250,

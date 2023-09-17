@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'package:cinema_ui_flutter/presentation/screens/screens.dart';
+
 class CustomTitle extends StatelessWidget {
   final String text;
+  final VoidCallback? loadNextPage;
 
   const CustomTitle({
     super.key,
     required this.text,
+    this.loadNextPage,
   });
 
   @override
@@ -20,7 +24,16 @@ class CustomTitle extends StatelessWidget {
         ),
       ),
       TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return TrendingScreen(
+                text: text,
+                loadNextPage: loadNextPage,
+              );
+            },
+          ));
+        },
         child: const Text(
           "See all",
           style: TextStyle(color: Colors.grey),
